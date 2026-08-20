@@ -14,7 +14,7 @@ authors:
 version: 1.0.0
 date-released: 2026-08-18
 license: MIT
-repository-code: "https://github.com/USERNAME/tpi-marmara"
+repository-code: "https://github.com/sbayburt/tpi-marmara"
 preferred-citation:
   type: article
   title: "A Reproducible Tourism Pressure Index (TPI) from Open Geospatial Data: Methodology and Application to the Marmara Region, Türkiye"
