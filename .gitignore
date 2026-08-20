@@ -1,0 +1,26 @@
+# Raw input data (obtain from sources listed in data/README.md)
+data/raw/*
+!data/raw/.gitkeep
+
+# Large derived rasters — deposit in Zenodo instead
+data/processed/*.tif
+data/processed/*.tiff
+
+# API cache (may contain keys or large payloads)
+*.cache.json
+tpi_google_cache.json
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/

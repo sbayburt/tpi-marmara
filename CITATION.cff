@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "If you use this software or the derived layers, please cite the article below."
+title: "Tourism Pressure Index (TPI) — Marmara Region: reproducible workflow"
+authors:
+  - family-names: Bayburt
+    given-names: Serdar
+    affiliation: "Denge Altyapı Proje Müşavirlik ve İnşaat A.Ş., İstanbul, Türkiye"
+  - family-names: Büyüksalih
+    given-names: Gürcan
+    affiliation: "Institute of Marine Sciences and Management, Istanbul University, İstanbul, Türkiye"
+  - family-names: Gazioğlu
+    given-names: Cem
+    affiliation: "Institute of Marine Sciences and Management, Istanbul University, İstanbul, Türkiye"
+version: 1.0.0
+date-released: 2026-08-18
+license: MIT
+repository-code: "https://github.com/USERNAME/tpi-marmara"
+preferred-citation:
+  type: article
+  title: "A Reproducible Tourism Pressure Index (TPI) from Open Geospatial Data: Methodology and Application to the Marmara Region, Türkiye"
+  authors:
+    - family-names: Bayburt
+      given-names: Serdar
+    - family-names: Büyüksalih
+      given-names: Gürcan
+    - family-names: Gazioğlu
+      given-names: Cem
+  year: 2026
+  journal: "TBD"
+  doi: "TBD"
