@@ -24,7 +24,7 @@ Table 1 and Section 3.1 of the manuscript.
 | Coordinate reference system | WGS 84 / UTM Zone 35N (EPSG:32635) |
 | Cell size | 250 m |
 | Kernel | Gaussian, σ = 3 cells = 750 m |
-| Outlier treatment | 95th-percentile clip, then log1p |
+| Outlier treatment | 95th-percentile clip, then rescaling by that percentile; normalised values below 0.05 censored to zero |
 | Normalisation | linear rescale to [0, 1] per indicator |
 | Aggregation | weighted linear sum, Σ wᵢ = 1 |
 | Land mask | dissolved provincial polygons |
