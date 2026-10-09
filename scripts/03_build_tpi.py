@@ -6,7 +6,7 @@ Stages (Sections 3.2-3.5 of the paper):
   1. read the eight indicator point layers, reproject to EPSG:32635
   2. rasterise each to a 250 m grid
   3. Gaussian kernel density estimation, sigma = 3 cells (750 m)
-  4. 95th-percentile clipping -> log1p -> rescale to 0-1
+  4. 95th-percentile clipping -> rescale by that percentile -> censor below 0.05
   5. weighted linear sum, land mask, write GeoTIFF
 
 Run:  python scripts/03_build_tpi.py
@@ -34,11 +34,22 @@ def read_layer(name: str) -> gpd.GeoDataFrame:
     return gdf.to_crs(CRS_METRIC)
 
 
-def build_grid(layers: dict, pad_m: float = 5000.0):
-    """Common grid covering all layers, padded so kernels are not truncated."""
-    bounds = np.array([g.total_bounds for g in layers.values() if len(g)])
-    minx, miny = bounds[:, 0].min() - pad_m, bounds[:, 1].min() - pad_m
-    maxx, maxy = bounds[:, 2].max() + pad_m, bounds[:, 3].max() + pad_m
+def build_grid(layers: dict | None = None):
+    """The fixed analysis grid on which the published surface was computed.
+
+    The extent is the regional bounding box of GRID_BBOX_LONLAT projected to
+    CRS_METRIC, discretised at CELL_SIZE_M. It is fixed rather than derived
+    from the layer extents so that the grid does not change when an indicator
+    layer is re-downloaded, added or dropped. Features falling outside it are
+    not counted.
+    """
+    from pyproj import Transformer
+    min_lon, min_lat, max_lon, max_lat = GRID_BBOX_LONLAT
+    tr = Transformer.from_crs("EPSG:4326", CRS_METRIC, always_xy=True)
+    xs, ys = zip(*[tr.transform(lon, lat) for lon, lat in
+                   [(min_lon, min_lat), (max_lon, min_lat),
+                    (max_lon, max_lat), (min_lon, max_lat)]])
+    minx, maxx, miny, maxy = min(xs), max(xs), min(ys), max(ys)
     width = int(np.ceil((maxx - minx) / CELL_SIZE_M))
     height = int(np.ceil((maxy - miny) / CELL_SIZE_M))
     transform = from_origin(minx, maxy, CELL_SIZE_M, CELL_SIZE_M)
@@ -62,22 +73,34 @@ def rasterise_counts(gdf, transform, width, height) -> np.ndarray:
 
 
 def kde(counts: np.ndarray) -> np.ndarray:
-    """Gaussian kernel density estimation by convolution."""
-    return ndimage.gaussian_filter(counts, sigma=SIGMA_CELLS, mode="constant", cval=0.0)
+    """Gaussian kernel density estimation by convolution.
+
+    scipy's default boundary handling is used, as it was for the published
+    surface; the land mask applied at the end removes the regional edge.
+    """
+    return ndimage.gaussian_filter(counts, sigma=SIGMA_CELLS)
 
 
 def normalise(surface: np.ndarray) -> np.ndarray:
-    """95th-percentile clip -> log1p -> rescale to [0, 1]."""
-    positive = surface[surface > 0]
-    if positive.size == 0:
+    """95th-percentile clip -> rescale by that percentile -> censor below FLOOR.
+
+    This is the normalisation that produced the published surface. Each
+    indicator is divided by its own 95th percentile, so that its most
+    intensive five per cent of cells take the value one. Cells whose rescaled
+    value then falls below FLOOR are set to zero, which removes the
+    low-amplitude halo that Gaussian smoothing diffuses across the shoreline
+    and into areas carrying no tourism supply. Set FLOOR = 0.0 to obtain an
+    uncensored surface. The percentile is taken over cells above
+    ACTIVE_EPS rather than over all positive cells, so that the numerically
+    negligible tail of the kernel does not enter the percentile.
+    """
+    active = surface[surface > ACTIVE_EPS]
+    if active.size == 0:
         return surface
-    q = np.percentile(positive, CLIP_PERCENTILE)
-    clipped = np.minimum(surface, q)
-    stretched = np.log1p(clipped)
-    lo, hi = stretched.min(), stretched.max()
-    if hi <= lo:
-        return np.zeros_like(stretched)
-    return (stretched - lo) / (hi - lo)
+    q = np.percentile(active, CLIP_PERCENTILE)
+    out = np.minimum(surface, q) / q
+    out[out < FLOOR] = 0.0
+    return out
 
 
 def main() -> None:
@@ -114,9 +137,12 @@ def main() -> None:
             dst.write(surface.astype("float32"), 1)
         print(f"    {name:12s} w={weight:.3f}  max={surface.max():.4f}  -> {out.name}")
 
-    # final rescale so the index spans the full unit interval
-    if tpi.max() > 0:
-        tpi = tpi / tpi.max()
+    # final rescale so the index spans the full unit interval; this is
+    # monotonic, so rankings, rank correlations and the hot-spot
+    # classification are unaffected by it
+    lo, hi = float(tpi.min()), float(tpi.max())
+    if hi > lo:
+        tpi = (tpi - lo) / (hi - lo)
 
     with rasterio.open(TPI_RASTER, "w", **profile) as dst:
         dst.write(tpi.astype("float32"), 1)
