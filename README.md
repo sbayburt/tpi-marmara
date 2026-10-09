@@ -100,7 +100,7 @@ centralised in `scripts/config.py` — edit there, not inside individual scripts
 | Acquisition | OSM Overpass API + official Blue Flag list | 8 layers, n = 10,890 |
 | Pre-process | centroid extraction, reprojection, land mask | EPSG:32635 |
 | Density | Gaussian kernel density estimation | 250 m grid, σ = 750 m |
-| Normalise | 95th-percentile clip → log1p → rescale 0–1 | per indicator |
+| Normalise | 95th-percentile clip → rescale by that percentile → censor < 0.05 | per indicator |
 | Aggregate | weighted linear sum | Σ wᵢ = 1 |
 
 Indicator weights: hotels 0.25, beaches 0.20, restaurants/cafés 0.15, marinas 0.10,
