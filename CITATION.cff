@@ -4,15 +4,23 @@ title: "Tourism Pressure Index (TPI) — Marmara Region: reproducible workflow"
 authors:
   - family-names: Bayburt
     given-names: Serdar
+    email: serdar.bayburt@ogr.iu.edu.tr
+    orcid: "https://orcid.org/0000-0001-6152-2900"
+    affiliation: "Institute of Marine Sciences and Management, Istanbul University, İstanbul, Türkiye"
+  - family-names: Bayırhan
+    given-names: İrşad
+    orcid: "https://orcid.org/0000-0001-9404-399X"
     affiliation: "Institute of Marine Sciences and Management, Istanbul University, İstanbul, Türkiye"
   - family-names: Büyüksalih
     given-names: Gürcan
+    orcid: "https://orcid.org/0000-0002-7127-4602"
     affiliation: "Institute of Marine Sciences and Management, Istanbul University, İstanbul, Türkiye"
   - family-names: Gazioğlu
     given-names: Cem
+    orcid: "https://orcid.org/0000-0002-3041-7603"
     affiliation: "Institute of Marine Sciences and Management, Istanbul University, İstanbul, Türkiye"
-version: 1.0.0
-date-released: 2026-08-18
+version: 1.1.0
+date-released: 2026-10-09
 license: MIT
 repository-code: "https://github.com/sbayburt/tpi-marmara"
 preferred-citation:
@@ -21,10 +29,16 @@ preferred-citation:
   authors:
     - family-names: Bayburt
       given-names: Serdar
+      orcid: "https://orcid.org/0000-0001-6152-2900"
+    - family-names: Bayırhan
+      given-names: İrşad
+      orcid: "https://orcid.org/0000-0001-9404-399X"
     - family-names: Büyüksalih
       given-names: Gürcan
+      orcid: "https://orcid.org/0000-0002-7127-4602"
     - family-names: Gazioğlu
       given-names: Cem
+      orcid: "https://orcid.org/0000-0002-3041-7603"
   year: 2026
   journal: "TBD"
   doi: "TBD"
