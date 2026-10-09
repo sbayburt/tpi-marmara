@@ -44,7 +44,14 @@ SIGMA_M = SIGMA_CELLS * CELL_SIZE_M
 
 # --------------------------------------------------- outlier treatment
 CLIP_PERCENTILE = 95              # clip densities above this percentile
-# Transformation is log1p, applied after clipping; see 03_build_tpi.py
+# After clipping, each indicator is rescaled by its own 95th percentile and
+# normalised values below FLOOR are censored to zero; see 03_build_tpi.py
+FLOOR = 0.05                      # censor normalised values below this
+ACTIVE_EPS = 1e-4                 # cells above this count as active for the percentile
+
+# Fixed analysis grid (lon/lat), projected to CRS_METRIC in 03_build_tpi.py.
+# Fixed rather than derived from layer extents so the grid is stable.
+GRID_BBOX_LONLAT = (26.0, 39.8, 30.5, 41.5)
 
 # ------------------------------------------------------------- classes
 CLASS_BREAKS = [0.0, 0.20, 0.40, 0.60, 0.80, 1.0]
