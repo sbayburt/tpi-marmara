@@ -1,4 +1,4 @@
-cff-version: 1.2.0
+cff-version: 1.2.1
 message: "If you use this software or the derived layers, please cite the article below."
 title: "Tourism Pressure Index (TPI) — Marmara Region: reproducible workflow"
 authors:
@@ -19,8 +19,8 @@ authors:
     given-names: Cem
     orcid: "https://orcid.org/0000-0002-3041-7603"
     affiliation: "Institute of Marine Sciences and Management, Istanbul University, İstanbul, Türkiye"
-version: 1.2.0
-date-released: 2026-18-10
+version: 1.2.1
+date-released: 2026-10-18
 license: MIT
 repository-code: "https://github.com/sbayburt/tpi-marmara"
 preferred-citation:
