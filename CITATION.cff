@@ -19,8 +19,8 @@ authors:
     given-names: Cem
     orcid: "https://orcid.org/0000-0002-3041-7603"
     affiliation: "Institute of Marine Sciences and Management, Istanbul University, İstanbul, Türkiye"
-version: 1.1.0
-date-released: 2026-10-09
+version: 1.2.0
+date-released: 2026-18-10
 license: MIT
 repository-code: "https://github.com/sbayburt/tpi-marmara"
 preferred-citation:
