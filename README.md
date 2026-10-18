@@ -130,3 +130,11 @@ If you use this code or the derived layers, please cite the paper (see `CITATION
 
 Serdar Bayburt — Denge Altyapı Proje Müşavirlik ve İnşaat A.Ş., İstanbul, Türkiye.
 Issues and questions: please use the GitHub Issues tab.
+
+## Environmental exposure analysis (paper Section 4.5)
+
+The `exposure/` folder reproduces the land-cover, coastal-band, protected-area and
+settlement-change analyses of Section 4.5 (Tables 6–10, Figure 10) from the published
+TPI surface and four open context layers (ESA WorldCover 2021, WDPA, OpenStreetMap
+protected areas, WSF Tracker 2016–2026). See `exposure/README.md` for data acquisition
+and run order. The index pipeline in `scripts/` is unchanged from v1.1.0.
